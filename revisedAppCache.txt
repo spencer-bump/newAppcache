@@ -1,0 +1,4 @@
+CACHE MANIFEST
+script.js
+style.css
+testfile.txt

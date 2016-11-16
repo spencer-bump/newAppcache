@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <title>cache</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            window.applicationCache.myProperty = "TEST";
+            window.applicationCache.addEventListener("checking", function (event) {
+                    console.log("Checking", event);
+            }, false)
+          $('#downloadAppCache').click(function() {
+            var appCacheFrame = $('iframe').get(0);
+            if (appCacheFrame) {
+                console.log("appCacheFrame exits");
+                appCacheFrame.contentWindow.applicationCache.update();
+            }
+            else {
+                var iframe = document.createElement("iframe");
+                iframe.setAttribute("src", "offline.html");
+                iframe.setAttribute("id", "top");
+
+                iframe.style.position = "absolute";
+
+
+
+                document.getElementById("content-area").appendChild(iframe);
+                // $('#content-area').after('<iframe id="appCacheDownloadFrame" src="offline.html" style="position:absolute;"></iframe>');
+                // console.log("Status: " + window.applicationCache.status);
+                // appCacheFrame = $('#appCacheDownloadFrame').get(0);
+
+                // iframe.contentWindow.applicationCache.addEventListener('onprogress', function(event) {
+                //       console.log("loading", event.loaded);
+                //   }, false);
+                // iframe.contentWindow.applicationCache.addEventListener('checking', function(event) {
+                //       console.log("checking", event.loaded);
+                //   }, false);
+                iframe.contentWindow.applicationCache.onchecking = (function() {
+                    return function (event) {
+                      console.log("checking", event);
+                    }
+                  })();
+                console.log("OfflineAppCache", iframe.contentWindow.applicationCache);
+                // iframe.contentWindow.applicationCache.update();
+            }
+         });
+          $('iframe').click(function () {
+                console.log("iframe clicked");
+          });
+          $("#swapAppCache").click(function () {
+                console.log("app cache update clicked");
+                // var appCacheFrame = $('#appCacheDownloadFrame').get(0);
+                // appCacheFrame.contentWindow.applicationCache.swapCache();
+                window.applicationCache.update();
+          });
+        });
+    </script>
+    <script type="text/javascript">
+        // var self = this;
+        // window.applicationCache.addEventListener('progress', function(event) {
+        //         self._appCacheDownloadedFileCount = event.loaded;
+        //         console.log("loading");
+        //     }, false);
+        // this.addPathChangeListener("_appCacheDownloadedFileCount", function () {
+        //     self._appCachePercentageComplete = Math.round(self._appCacheDownloadedFileCount / self._appCacheFileCount * 100) + "%";
+        //     self.needsDraw = true;
+        // });
+    </script>
+</head>
+<body>
+<h1>App Cache</h1>
+    <div>
+        <button onclick="addManifestTag()">Add manifest tag to html - no go</button>
+    </div>
+    <div>
+        <button onclick="showAppCacheStatus()">AppCache Status</button>
+    </div>
+    <div>
+        <button id="downloadAppCache">Add Iframe - trigger download</button>
+    </div>
+    <div>
+        <button id="swapAppCache">Update Cache</button>
+    </div>
+    <div id="results"></div>
+    <div id="content-area"></div>
+
+    <script src="script.js" async></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html manifest="example.appcache">
+<head>
+<title>offline.html</title>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ --><script type="text/javascript">
+  // showAppCacheStatus();
+
+    console.log("OfflineDocumentReady");
+    // window.applicationCache.addEventListener('checking', function(event) {
+    //     console.log("checking");
+    // }, false);
+    // window.applicationCache.addEventListener('noupdate', function(event) {
+    //     console.log("noupdate");
+    // }, false);
+    // window.applicationCache.addEventListener('progress', function(event) {
+    //     console.log("progress");
+    // }, false);
+    window.addEventListener('load', function(e) {
+        window.applicationCache.addEventListener('checking', function (event) {
+          console.log("CheckingApplicationCache");
+        }, false);
+
+          window.addEventListener("progress", function (e) {
+            console.log("WindowProgress", e);
+          })
+        document.getElementById("downloadAppCache").addEventListener("click", function() {
+          console.log(window.applicationCache);
+          window.applicationCache.update();
+        });
+
+        applicationCache.onprogress = function () {
+          console.log("OnProgress");
+        }
+
+        window.onprogress = function () {
+          console.log("OnProgressOther");
+        }
+
+        applicationCache.onchecking = function () {
+          console.log("OnChecking");
+        }
+
+        applicationCache.onnoupdate = function () {
+          console.log("NoUpdate");
+        }
+
+    })
+
+    window.applicationCache.addEventListener("cached", function (event) {
+      console.log("DoneApplicationCache");
+    }, false);
+
+
+
+
+ // $(document).ready(function() {
+ //    $('#downloadAppCache').click(function() {
+ //      console.log(window.applicationCache);
+ //      window.applicationCache.update();
+ //    });
+
+
+ //    $(window.applicationCache).on('cached error noupdate checking', function(e) {
+ //       var message = '';
+ //       console.log("DelgatedEvent", e);
+ //       switch (e.type) {
+ //         case 'error':
+ //           message = "The AppCache did not download."      + "<br />"
+ //                   + "We'll try again next time you visit." + "<br />"
+ //                   + '<a href="javascript:void(results.html(\'\'))">Click here</a> to dismiss this message and continue.';
+ //           break;
+ //        case 'cached':
+ //           message = "The AppCache has been successfully installed.";
+ //           break;
+ //        case 'noupdate':
+ //           message = "No changes have been made to the cached files since you last downloaded the AppCache.";
+ //           break;
+ //       }
+ //       $(parent.results).html(message);
+ //    });
+ //  });
+</script>
+</head>
+<body>
+    <div>
+        <button id="downloadAppCache">Add Iframe - trigger download</button>
+    </div>
+    <script src="script.js" async></script>
+</body>
+</html>
